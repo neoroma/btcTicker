@@ -1,58 +1,15 @@
 import {Router} from 'express'
-import R from 'ramda'
 import https from 'https'
 import http from 'http'
 import RxNode from 'rx-node'
 import {Observable} from '@reactivex/rxjs'
 
+import {packageTheResult} from '../feeds/util'
+import blockchainFeed from '../feeds/blockchain.feed'
+import bitcoinchartsFeed from '../feeds/bitcoincharts.feed'
+import coindeskFeed from '../feeds/coindesk.feed'
+
 const router = Router()
-
-const eurLens = R.lensProp('EUR')
-const bidLens = R.lensProp('bid')
-
-const propAsPrice = R.curry((prop, obj) => {
-    return {
-        price: R.prop(prop, obj)
-    }
-})
-
-const sortByPrice = R.sortBy(R.prop('price'))
-const packageTheResult = R.compose(
-    R.head,
-    R.reverse,
-    sortByPrice
-)
-
-const baseParse = R.compose(
-    JSON.parse,
-    R.reduce(R.concat, ''),
-    R.map(R.toString))
-
-const parseRate = R.compose(
-    R.assoc('src', 'blockchain.info'),
-    propAsPrice('last'),
-    R.pick(['last']),
-    R.view(eurLens),
-    baseParse
-)
-
-const parseCoindesk = R.compose(
-    R.assoc('src', 'coindesk.com'),
-    propAsPrice('rate_float'),
-    R.pick(['rate_float']),
-    R.view(eurLens),
-    R.prop('bpi'),
-    baseParse
-)
-
-const parseBitcoinchart = R.compose(
-    R.assoc('src', 'bitcoincharts.com'),
-    R.objOf('price'),
-    R.reduce(R.max, 0),
-    R.map(R.view(bidLens)),
-    R.filter(R.propEq('currency', 'EUR')),
-    baseParse
-)
 
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'})
@@ -60,9 +17,9 @@ router.get('/', function (req, res, next) {
 
 router.get('/btc', function (req, response, next) {
 
-    const blockchain$ = observableFromRequest('https', 'https://blockchain.info/ticker', parseRate)
-    const coindesk$ = observableFromRequest('http', 'http://api.coindesk.com/v1/bpi/currentprice.json', parseCoindesk)
-    const bitcoinchart$ = observableFromRequest('http', 'http://api.bitcoincharts.com/v1/markets.json', parseBitcoinchart)
+    const blockchain$ = observableFromRequest(blockchainFeed)
+    const coindesk$ = observableFromRequest(coindeskFeed)
+    const bitcoinchart$ = observableFromRequest(bitcoinchartsFeed)
 
     const feeds = [blockchain$, coindesk$, bitcoinchart$]
 
@@ -82,13 +39,13 @@ router.get('/btc', function (req, response, next) {
 
 })
 
-function observableFromRequest (protocol = 'http', feedUrl, parser) {
+function observableFromRequest ({client: protocol, url, parser}) {
 
     return Observable.create(subscriber => {
 
         const client = protocol === 'http' ? http : https
 
-        client.get(feedUrl, (res) => {
+        client.get(url, (res) => {
 
             const {statusCode} = res
 
