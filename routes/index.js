@@ -19,17 +19,18 @@ router.get('/btc', function (req, response, next) {
         R.map(R.toString))
 
     const parseRate = R.compose(
-        R.pick(['USD', 'EUR']),
+        R.pick(['EUR']),
         baseParse
     )
 
     const parseCoindesk = R.compose(
-        R.pick(['USD', 'EUR']),
+        R.pick(['EUR']),
         R.prop('bpi'),
         baseParse
     )
 
     const parseBitcoinchart = R.compose(
+        R.filter(R.propEq('currency', 'EUR')),
         baseParse
     )
 
@@ -37,10 +38,10 @@ router.get('/btc', function (req, response, next) {
     const coindesk$ = observableFromRequest('http', 'http://api.coindesk.com/v1/bpi/currentprice.json', parseCoindesk)
     const bitcoinchart$ = observableFromRequest('http', 'http://api.bitcoincharts.com/v1/markets.json', parseBitcoinchart)
 
-    const pool = [blockchain$, coindesk$, bitcoinchart$]
+    const feeds = [blockchain$, coindesk$, bitcoinchart$]
 
-    Observable.merge(...pool)
-        .bufferCount(pool.length)
+    Observable.merge(...feeds)
+        .bufferCount(feeds.length)
         .subscribe(
             data => {
                 response.json(data)
