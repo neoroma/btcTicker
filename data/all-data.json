@@ -1,0 +1,21 @@
+{
+  "winner": {
+    "price": 10000,
+    "src": "bitcoincharts.com"
+  },
+  "raw": [
+    {
+      "price": 1131.38,
+      "src": "blockchain.info"
+    },
+    {
+      "price": 1138.9382,
+      "src": "coindesk.com"
+    },
+    {
+      "price": 10000,
+      "src": "bitcoincharts.com"
+    }
+  ],
+  "sources": 3
+}
