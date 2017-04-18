@@ -1,0 +1,63 @@
+{
+  "extends": [
+    "eslint:recommended"
+  ],
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "generators": true
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "commonjs": true,
+    "amd": true,
+    "es6": true
+  },
+  "globals": {},
+  "plugins": [
+    "node"
+  ],
+  "rules": {
+    "semi": [
+      2,
+      "never"
+    ],
+    "quotes": [
+      2,
+      "single",
+      "avoid-escape"
+    ],
+    "no-undef": 2,
+    "eqeqeq": 2,
+    "curly": 0,
+    "no-console": 1,
+    "no-unused-vars": 1,
+    "jsx-quotes": [
+      1,
+      "prefer-double"
+    ],
+    "no-alert": 2,
+    "no-eval": 2,
+    "no-proto": 2,
+    "no-param-reassign": [
+      2,
+      {
+        "props": false
+      }
+    ],
+    "func-style": [
+      1,
+      "declaration"
+    ],
+    "yoda": 2
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "experimentalObjectRestSpread": true,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  }
+}
