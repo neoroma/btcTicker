@@ -19,17 +19,21 @@ router.get('/btc', function (req, response, next) {
         R.map(R.toString))
 
     const parseRate = R.compose(
+        R.assoc('src', 'blockchain.info'),
         R.pick(['EUR']),
         baseParse
     )
 
     const parseCoindesk = R.compose(
+        R.assoc('src', 'coindesk.com'),
         R.pick(['EUR']),
         R.prop('bpi'),
         baseParse
     )
 
     const parseBitcoinchart = R.compose(
+        R.assoc('src', 'bitcoincharts.com'),
+        R.objOf('EUR'),
         R.filter(R.propEq('currency', 'EUR')),
         baseParse
     )
