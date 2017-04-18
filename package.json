@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "npm-run-all start-develop",
+    "start-develop": "nodemon --verbose --debug ./bin/www --exec babel-node",
+    "start-with-babel": "babel-node ./bin/www",
+    "test": ""
   },
   "dependencies": {
     "@reactivex/rxjs": "^5.3.0",
@@ -14,6 +17,7 @@
     "morgan": "~1.8.1",
     "pug": "~2.0.0-beta11",
     "ramda": "^0.23.0",
+    "rx-node": "^1.0.2",
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
