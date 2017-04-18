@@ -1,8 +1,6 @@
 import {Router} from 'express'
-import https from 'https'
-import http from 'http'
-import RxNode from 'rx-node'
 import {Observable} from '@reactivex/rxjs'
+import fetch from 'node-fetch'
 
 import {packageTheResult} from '../feeds/util'
 import blockchainFeed from '../feeds/blockchain.feed'
@@ -17,9 +15,9 @@ router.get('/', function (req, res, next) {
 
 router.get('/btc', function (req, response, next) {
 
-    const blockchain$ = observableFromRequest(blockchainFeed)
-    const coindesk$ = observableFromRequest(coindeskFeed)
-    const bitcoinchart$ = observableFromRequest(bitcoinchartsFeed)
+    const blockchain$ = observableFromFeed(blockchainFeed)
+    const coindesk$ = observableFromFeed(coindeskFeed)
+    const bitcoinchart$ = observableFromFeed(bitcoinchartsFeed)
 
     const feeds = [blockchain$, coindesk$, bitcoinchart$]
 
@@ -39,40 +37,21 @@ router.get('/btc', function (req, response, next) {
 
 })
 
-function observableFromRequest ({client: protocol, url, parser}) {
+function observableFromFeed ({url, parser}) {
 
-    return Observable.create(subscriber => {
+    const errorObject = {
+        price: 0,
+        status: 'red',
+        url
+    }
 
-        const client = protocol === 'http' ? http : https
-
-        client.get(url, (res) => {
-
-            const {statusCode} = res
-
-            if (statusCode !== 200) {
-                subscriber.next({
-                    price: 0,
-                    status: 'red'
-                })
-                subscriber.complete()
-
-                return
-            }
-
-            RxNode.fromStream(res)
-                .bufferCount(100)
-                .subscribe(buffers => {
-                    subscriber.next(parser(buffers))
-                    subscriber.complete()
-                })
-
-        }).on('error', err => {
-            subscriber.error(err)
-        })
-
-        return () => {
-        }
-    })
+    return Observable
+        .fromPromise(
+            fetch(url)
+                .then(res => res.json())
+        )
+        .map(parser)
+        .catch(err => Observable.of(errorObject))
 }
 
 export {router}
