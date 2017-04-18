@@ -34,16 +34,19 @@ router.get('/btc', function (req, response, next) {
     )
 
     const blockchain$ = observableFromRequest('https', 'https://blockchain.info/ticker', parseRate)
-    // const coindesk$ = observableFromRequest('http://api.coindesk.com/v1/bpi/currentprice.json', parseCoindesk)
-    // const bitcoinchart$ = observableFromRequest('http://api.bitcoincharts.com/v1/markets.json', parseBitcoinchart)
+    const coindesk$ = observableFromRequest('http', 'http://api.coindesk.com/v1/bpi/currentprice.json', parseCoindesk)
+    const bitcoinchart$ = observableFromRequest('http', 'http://api.bitcoincharts.com/v1/markets.json', parseBitcoinchart)
 
-    const pool = [blockchain$]
+    const pool = [blockchain$, coindesk$, bitcoinchart$]
 
     Observable.merge(...pool)
         .bufferCount(pool.length)
-        .subscribe(data => {
-            response.json(data)
-        })
+        .subscribe(
+            data => {
+                response.json(data)
+            }, ({code}) => {
+                response.status(500).send(code)
+            })
 
 })
 
@@ -56,13 +59,15 @@ function observableFromRequest (protocol = 'http', feedUrl, parser) {
         client.get(feedUrl, (res) => {
 
             RxNode.fromStream(res)
-                .bufferCount(10)
+                .bufferCount(100)
                 .subscribe(buffers => {
                     subscriber.next(parser(buffers))
                     subscriber.complete()
                 })
 
-        }).on('error', subscriber.error)
+        }).on('error', err => {
+            subscriber.error(err)
+        })
 
         return () => {
         }
