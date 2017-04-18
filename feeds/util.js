@@ -16,16 +16,9 @@ const packageTheResult = R.compose(
     sortByPrice
 )
 
-const baseParse = R.compose(
-    JSON.parse,
-    R.reduce(R.concat, ''),
-    R.map(R.toString)
-)
-
 export {
     eurLens,
     bidLens,
     propAsPrice,
-    baseParse,
     packageTheResult
 }
