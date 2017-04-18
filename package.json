@@ -6,7 +6,7 @@
     "start": "npm-run-all start-develop",
     "start-develop": "nodemon --verbose --debug ./bin/www --exec babel-node",
     "start-with-babel": "babel-node ./bin/www",
-    "test": ""
+    "test": "mocha --reporter progress build-helpers/test-setup.js \"*/*.spec.js\""
   },
   "dependencies": {
     "@reactivex/rxjs": "^5.3.0",
@@ -15,6 +15,7 @@
     "debug": "~2.6.3",
     "express": "~4.15.2",
     "morgan": "~1.8.1",
+    "node-fetch": "^1.6.3",
     "pug": "~2.0.0-beta11",
     "ramda": "^0.23.0",
     "rx-node": "^1.0.2",
