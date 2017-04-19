@@ -7,9 +7,10 @@ import fetch from 'node-fetch'
  * But we could just pass the error to handle it down the pipe
  * @param url of the feed
  * @param parser, a function to deal with incoming data
+ * @param fetcher to pass a mock for example, have a default value
  * @returns an Observable (next and complete at the same time)
  */
-export const observableFromFeed = ({url, parser}) => {
+export const observableFromFeed = ({url, parser}, fetcher = fetch) => {
 
     const errorObject = {
         price: 0,
@@ -19,7 +20,7 @@ export const observableFromFeed = ({url, parser}) => {
 
     return Observable
         .fromPromise(
-            fetch(url)
+            fetcher(url)
                 .then(res => res.json())
         )
         .do(() => {
