@@ -18,5 +18,9 @@ describe('coindesk feed', () => {
                 .that.is.an('object')
                 .that.deep.equals(expectedObj)
         })
+
+        describe('parsing bad data', () => {
+            // to be added
+        })
     })
 })

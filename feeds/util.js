@@ -4,8 +4,10 @@ const eurLens = R.lensProp('EUR')
 const bidLens = R.lensProp('bid')
 
 const propAsPrice = R.curry((prop, obj) => {
+
+    const getProp = R.compose(R.defaultTo(0), R.prop(prop))
     return {
-        price: R.prop(prop, obj)
+        price: getProp(obj)
     }
 })
 

@@ -52,5 +52,20 @@ describe('utils', () => {
                 .that.is.an('object')
                 .that.deep.equals(expectedObj)
         })
+
+        it('should handle absent prop', () => {
+
+            const objToTest = {
+                'zzzz': 1111.9999
+            }
+
+            const expectedObj = {
+                price: 0
+            }
+
+            expect(propAsPrice('rate_float')(objToTest))
+                .that.is.an('object')
+                .that.deep.equals(expectedObj)
+        })
     })
 })
