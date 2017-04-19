@@ -1,5 +1,5 @@
 import R from 'ramda'
-import {eurLens, propAsPrice} from './util'
+import {eurLens, propAsPrice} from '../util'
 
 export default {
 

@@ -1,5 +1,5 @@
 import R from 'ramda'
-import {bidLens} from './util'
+import {bidLens} from '../util'
 
 export default {
 

@@ -1,18 +1,18 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import data from '../data/coindesk.json'
-import coindeskFeed from './coindesk.feed'
+import markets from '../../data/markets.json'
+import bitcoinchartsFeed from './bitcoincharts.feed'
 
-describe('coindesk feed', () => {
+describe('bitcoincharts feed', () => {
 
-    const {parser} = coindeskFeed
+    const {parser} = bitcoinchartsFeed
 
     describe('parser', () => {
         it('should parse the input json and return expected object', () => {
 
-            const result = parser(data)
-            const expectedObj = {price: 1143.1901, src: 'coindesk.com'}
+            const result = parser(markets)
+            const expectedObj = {price: 10000, src: 'bitcoincharts.com'}
 
             expect(result)
                 .that.is.an('object')

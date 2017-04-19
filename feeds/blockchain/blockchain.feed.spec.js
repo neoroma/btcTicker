@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import {expect} from 'chai'
-import data from '../data/blockchain.json'
+import data from '../../data/blockchain.json'
 import blockchainFeed from './blockchain.feed'
 
 describe('blockchain feed', () => {

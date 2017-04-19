@@ -3,9 +3,10 @@ import {Observable} from '@reactivex/rxjs'
 import fetch from 'node-fetch'
 
 import {packageTheResult} from '../feeds/util'
-import blockchainFeed from '../feeds/blockchain.feed'
-import bitcoinchartsFeed from '../feeds/bitcoincharts.feed'
-import coindeskFeed from '../feeds/coindesk.feed'
+
+import blockchainFeed from '../feeds/blockchain/blockchain.feed'
+import bitcoinchartsFeed from '../feeds/bitcoincharts/bitcoincharts.feed'
+import coindeskFeed from '../feeds/coindesk/coindesk.feed'
 
 const router = Router()
 
