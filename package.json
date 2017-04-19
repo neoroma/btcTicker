@@ -1,6 +1,6 @@
 {
   "name": "btcticker",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "npm-run-all start-develop",
@@ -12,13 +12,10 @@
     "@reactivex/rxjs": "^5.3.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
     "express": "~4.15.2",
     "morgan": "~1.8.1",
     "node-fetch": "^1.6.3",
-    "pug": "~2.0.0-beta11",
     "ramda": "^0.23.0",
-    "rx-node": "^1.0.2",
     "serve-favicon": "~2.4.2",
     "socket.io": "^1.7.3"
   },
