@@ -1,8 +1,14 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+ol#the-list li {
+    font-weight: bold;
+    opacity: 0.5;
+}
+
+ol#the-list li:first-child {
+    font-weight: bold;
+    opacity: 1;
 }

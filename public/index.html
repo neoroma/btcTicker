@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hi</title>
+    <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+<body>
+
+<div>
+    <span id="info"></span>
+    <ol id="the-list"></ol>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://unpkg.com/rxjs/bundles/Rx.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.23.0/ramda.min.js"></script>
+<script>
+
+    const socket = io('http://localhost:3000')
+    const new$ = Rx.Observable.fromEvent(socket, 'news')
+    const init$ = Rx.Observable.fromEvent(socket, 'init')
+    const getWinner = R.prop('winner')
+    const reducer = (acc, val) => [val, ...R.take(9)(acc)]
+
+    const sideEffect = data => {
+        const elems = R.map(({price, src}) => `<li>BTC/EUR: ${price} from ${src}</li>`)(data)
+        document.getElementById('the-list').innerHTML = elems.join('')
+    }
+
+    init$
+        .subscribe(msg => {
+            document.getElementById('info').innerHTML = msg
+        })
+
+    new$
+        .map(getWinner)
+        .scan(reducer, [])
+        .subscribe(sideEffect)
+
+</script>
+</body>
+</html>
