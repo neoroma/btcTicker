@@ -1,5 +1,7 @@
 # ticker
 
+[![Build Status](https://travis-ci.org/neoroma/btcTicker.svg?branch=master)](https://travis-ci.org/neoroma/btcTicker)
+
 `npm i` and all that
 
 ## To try
