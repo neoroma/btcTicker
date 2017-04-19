@@ -40,9 +40,17 @@ const bitcoinchart$ = observableFromFeed(bitcoinchartsFeed)
 
 const feeds = [blockchain$, coindesk$, bitcoinchart$]
 
+/**
+ * Let's merge all feeds streams to one with a help of a bufferCount.
+ * So n feeds will produce one [] value after all completed
+ */
 const request$ = Observable.merge(...feeds)
     .bufferCount(feeds.length)
 
+/**
+ * Merging with some initial trigger to produce first value at once
+ * On every tick value we will take our requests to go for actual data
+ */
 const stream$ = Observable.merge(tick$, Observable.timer(100))
     .flatMap(() => request$)
     .publishReplay(5)

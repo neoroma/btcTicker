@@ -1,6 +1,14 @@
 import {Subject} from '@reactivex/rxjs'
 import {packageTheResult} from '../feeds/util'
 
+/**
+ * Let's make a socket connection handler
+ * After someone connects to the socket, we will subscribe to the data shared
+ * data stream. It will also unsubscribe from the stream after disconnecting.
+ * As our stream is counting refs, it will not emit values without any subscribers
+ * @param stream$, to have some data stream to use
+ * @returns {function(*)} handler for the connection
+ */
 export const onConnection = function (stream$) {
 
     return (socket) => {
