@@ -19,7 +19,8 @@
     "pug": "~2.0.0-beta11",
     "ramda": "^0.23.0",
     "rx-node": "^1.0.2",
-    "serve-favicon": "~2.4.2"
+    "serve-favicon": "~2.4.2",
+    "socket.io": "^1.7.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
