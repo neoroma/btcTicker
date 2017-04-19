@@ -1,8 +1,10 @@
 import {Observable, Subject} from '@reactivex/rxjs'
 
+const intervalTime = process.env.CHECK_INTERVAL || 30000
+
 const tearDown$ = new Subject()
 const tick$ = Observable
-    .interval(10000)
+    .interval(intervalTime)
     .takeUntil(tearDown$)
 
 

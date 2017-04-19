@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm-run-all start-develop",
-    "start-develop": "nodemon --verbose --debug ./bin/www --exec babel-node",
+    "start-develop": "CHECK_INTERVAL=60000 nodemon --verbose --debug ./bin/www --exec babel-node",
     "start-with-babel": "babel-node ./bin/www",
     "test": "mocha --reporter progress build-helpers/test-setup.js \"**/*.spec.js\""
   },
