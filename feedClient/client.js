@@ -14,6 +14,12 @@ export const observableFromFeed = ({url, parser}) => {
             fetch(url)
                 .then(res => res.json())
         )
+        .do(() => {
+            /**
+             * Feel free to log some responses
+             */
+        })
         .map(parser)
+        .retry(3)
         .catch(err => Observable.of(errorObject))
 }
