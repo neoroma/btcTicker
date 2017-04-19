@@ -8,6 +8,7 @@ export default {
         R.assoc('src', 'bitcoincharts.com'),
         R.objOf('price'),
         R.reduce(R.max, 0),
+        // we could add some string parsing to number or smth if needed here
         R.map(R.view(bidLens)),
         R.filter(R.propEq('currency', 'EUR'))
     )
