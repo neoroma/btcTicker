@@ -31,6 +31,6 @@ Rx (ReactiveX) approach is perfect for having the same style of coding both on F
 
 ![alt tag](http://ramda.jcphillipps.com/logo/ramdaFilled_200x235.png)
 
-Using **ramda** heavily to make the code look and work in a functional fashion and declarative. 
+Using **ramda** heavily to make the code look declarative and work in a functional fashion. 
 Small pure functions are building block to compose more complex applications. 
 
