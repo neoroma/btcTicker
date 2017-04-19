@@ -1,6 +1,7 @@
 import {Router} from 'express'
 import {Observable} from '@reactivex/rxjs'
-import fetch from 'node-fetch'
+import {tick$, tearDown$} from '../ticker'
+import {observableFromFeed} from '../feedClient/client'
 
 import {packageTheResult} from '../feeds/util'
 
@@ -10,8 +11,14 @@ import coindeskFeed from '../feeds/coindesk/coindesk.feed'
 
 const router = Router()
 
-router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'})
+router.get('/tick', function (req, res, next) {
+    tick$.subscribe(val => console.log('Next tick: ', val))
+    res.status(200).send('ticker started')
+})
+
+router.get('/stop', function (req, res, next) {
+    tearDown$.next()
+    res.status(200).send('ticker stopped')
 })
 
 router.get('/btc', function (req, response, next) {
@@ -37,22 +44,5 @@ router.get('/btc', function (req, response, next) {
             })
 
 })
-
-function observableFromFeed ({url, parser}) {
-
-    const errorObject = {
-        price: 0,
-        status: 'red',
-        url
-    }
-
-    return Observable
-        .fromPromise(
-            fetch(url)
-                .then(res => res.json())
-        )
-        .map(parser)
-        .catch(err => Observable.of(errorObject))
-}
 
 export {router}
